@@ -1,0 +1,128 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://display_image.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
+
+[node name="Panel" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel Left" type="Panel" parent="Control"]
+margin_right = 640.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/Panel Left"]
+margin_right = 640.0
+margin_bottom = 30.0
+text = "  FlowMagick"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GraphEdit" type="GraphEdit" parent="Control/Panel Left"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -570.0
+margin_right = 640.0
+right_disconnects = true
+zoom_min = 0.2
+zoom_max = 2.0
+show_zoom_label = true
+minimap_size = Vector2( 200, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Output" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
+margin_left = 400.0
+margin_top = 200.0
+margin_right = 485.0
+margin_bottom = 270.0
+mouse_filter = 1
+title = "OUTPUT"
+offset = Vector2( 400, 200 )
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Control/Panel Left/GraphEdit/Output"]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 69.0
+margin_bottom = 24.0
+
+[node name="Image" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
+margin_left = 100.0
+margin_top = 200.0
+margin_right = 300.0
+margin_bottom = 270.0
+mouse_filter = 1
+title = "Image"
+offset = Vector2( 100, 200 )
+show_close = true
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color( 0.180392, 0.760784, 0.545098, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Control" type="Control" parent="Control/Panel Left/GraphEdit/Image"]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 184.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Control/Panel Left/GraphEdit/Image"]
+margin_left = 16.0
+margin_top = 25.0
+margin_right = 184.0
+margin_bottom = 39.0
+text = "res://photo.png"
+align = 1
+valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -384.0
+margin_bottom = 342.0
+expand = true
+stretch_mode = 5
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
