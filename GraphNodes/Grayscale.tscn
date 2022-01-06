@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends GraphNode
+
+func _on_GraphNode_close_request():
+	queue_free()
+"
+
+[node name="GrayscaleNode" type="GraphNode"]
+margin_right = 120.0
+margin_bottom = 65.0
+title = "Grayscale"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color( 1, 1, 1, 1 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 24.0
+
+[connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]

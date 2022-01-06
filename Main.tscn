@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://display_image.gd" type="Script" id=1]
+[ext_resource path="res://graph.gd" type="Script" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.2, 0.2, 0.2, 1 )
@@ -42,21 +43,23 @@ anchor_bottom = 1.0
 margin_top = -570.0
 margin_right = 640.0
 right_disconnects = true
+snap_distance = 10
 zoom_min = 0.2
 zoom_max = 2.0
 show_zoom_label = true
 minimap_size = Vector2( 200, 100 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Output" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
+[node name="Show" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
 margin_left = 400.0
 margin_top = 200.0
 margin_right = 485.0
 margin_bottom = 270.0
 mouse_filter = 1
-title = "OUTPUT"
+title = "SHOW"
 offset = Vector2( 400, 200 )
 slot/0/left_enabled = true
 slot/0/left_type = 0
@@ -68,52 +71,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="Control/Panel Left/GraphEdit/Output"]
+[node name="Input Slot" type="Control" parent="Control/Panel Left/GraphEdit/Show"]
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 69.0
 margin_bottom = 24.0
 
-[node name="Image" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
-margin_left = 100.0
-margin_top = 200.0
-margin_right = 300.0
-margin_bottom = 270.0
-mouse_filter = 1
-title = "Image"
-offset = Vector2( 100, 200 )
-show_close = true
-slot/0/left_enabled = false
-slot/0/left_type = 0
-slot/0/left_color = Color( 1, 1, 1, 1 )
-slot/0/right_enabled = true
-slot/0/right_type = 0
-slot/0/right_color = Color( 0.180392, 0.760784, 0.545098, 1 )
-slot/1/left_enabled = false
-slot/1/left_type = 0
-slot/1/left_color = Color( 1, 1, 1, 1 )
-slot/1/right_enabled = false
-slot/1/right_type = 0
-slot/1/right_color = Color( 1, 1, 1, 1 )
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Control" type="Control" parent="Control/Panel Left/GraphEdit/Image"]
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 184.0
-margin_bottom = 24.0
-
-[node name="Label" type="Label" parent="Control/Panel Left/GraphEdit/Image"]
-margin_left = 16.0
-margin_top = 25.0
-margin_right = 184.0
-margin_bottom = 39.0
-text = "res://photo.png"
-align = 1
-valign = 1
+[node name="NodeSelector" type="PopupMenu" parent="Control/Panel Left/GraphEdit"]
+margin_left = 162.0
+margin_top = 317.0
+margin_right = 264.0
+margin_bottom = 419.0
+allow_search = true
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
 anchor_left = 1.0
@@ -126,3 +95,29 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="FileDialog" type="FileDialog" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_top = -200.0
+margin_right = 300.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 180, 63 )
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.jpg", "*.jpeg", "*.png", "*.gif" )
+current_dir = "/Users/adrian/Temporary"
+current_path = "/Users/adrian/Temporary/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="connection_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_connection_request"]
+[connection signal="disconnection_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_disconnection_request"]
+[connection signal="popup_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_popup_request"]
+[connection signal="id_pressed" from="Control/Panel Left/GraphEdit/NodeSelector" to="Control/Panel Left/GraphEdit" method="_on_PopupMenu_id_pressed"]
+[connection signal="file_selected" from="Control/FileDialog" to="Control/Panel Left/GraphEdit" method="_on_FileDialog_file_selected"]

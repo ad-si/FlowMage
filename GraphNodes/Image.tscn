@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends GraphNode
+
+var current_path := \"\"
+
+signal file_dialog_request(source_node)
+
+
+func set_loaded_path(new_path):
+	current_path = new_path
+	$Wrapper/LineEdit.set_text(new_path)
+
+
+func _on_GraphNode_close_request():
+	queue_free()
+
+
+func _on_Button_pressed():
+	emit_signal(\"file_dialog_request\", get_instance_id())
+"
+
+[node name="ImageSelectNode" type="GraphNode"]
+margin_right = 200.0
+margin_bottom = 100.0
+rect_scale = Vector2( 1, 1.00473 )
+title = "Load Image"
+show_close = true
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color( 1, 1, 1, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Wrapper" type="Control" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 184.0
+margin_bottom = 24.0
+
+[node name="Button" type="Button" parent="Wrapper"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.0
+margin_top = 5.0
+margin_right = 80.0
+margin_bottom = 20.0
+text = "Open File"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="Wrapper"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.0
+margin_top = 35.0
+margin_right = 80.0
+margin_bottom = 55.7411
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Output Slot" type="Control" parent="."]
+margin_left = 16.0
+margin_top = 25.0
+margin_right = 184.0
+margin_bottom = 25.0
+
+[connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]
+[connection signal="pressed" from="Wrapper/Button" to="." method="_on_Button_pressed"]
