@@ -1,5 +1,10 @@
 # FlowMagick
 
+The missing node / flow based GUI for [ImageMagick].
+
+[ImageMagick]: https://imagemagick.org/
+
+
 ## Roadmap
 
 - [ ] Split GraphEdit and Image with draggable separator
@@ -9,4 +14,8 @@
 
 ## Related
 
-- https://github.com/libvips/nip2
+- [chaiNNer] - Node-based image processing GUI.
+- [nip2] - A spreadsheet-like GUI for libvips.
+
+[chaiNNer]: https://github.com/chaiNNer-org/chaiNNer
+[nip2]: https://github.com/libvips/nip2
