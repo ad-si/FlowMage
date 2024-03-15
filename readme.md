@@ -18,9 +18,12 @@ The missing node / flow based GUI for [ImageMagick].
 - [Conjure] - Simple graphical desktop app for [ImageMagick].
 - [FotoKilof] - Comprehensive desktop app for [ImageMagick].
 - [nip2] - A spreadsheet-like GUI for [libvips].
+- [Pictonode] - Node-based image editor powered by [GEGL].
 
 [chaiNNer]: https://github.com/chaiNNer-org/chaiNNer
 [Conjure]: https://github.com/nate-xyz/conjure
 [FotoKilof]: https://github.com/TeaM-TL/FotoKilof
+[GEGL]: https://gegl.org
 [libvips]: https://github.com/libvips/libvips
 [nip2]: https://github.com/libvips/nip2
+[Pictonode]: https://github.com/TeamPictonode/pictonode
