@@ -8,8 +8,8 @@ func _on_GraphNode_close_request():
 "
 
 [node name="GrayscaleNode" type="GraphNode"]
-margin_right = 120.0
-margin_bottom = 65.0
+offset_right = 120.0
+offset_bottom = 65.0
 title = "Grayscale"
 show_close = true
 slot/0/left_enabled = true
@@ -24,9 +24,9 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="."]
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 104.0
-margin_bottom = 24.0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 104.0
+offset_bottom = 24.0
 
 [connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]

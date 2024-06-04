@@ -1,10 +1,7 @@
-# Import cache
-.import/
-
-# Binaries
-bin/
-build/
-lib/
-
-/addons
 *.import
+.import
+/.godot
+/addons
+bin
+build
+lib

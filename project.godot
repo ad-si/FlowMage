@@ -6,33 +6,27 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
-} ]
-_global_script_class_icons={
-"GitAPI": ""
-}
+config_version=5
 
 [application]
 
 config/name="FlowMagick"
 run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [display]
 
-window/dpi/allow_hidpi=true
+window/size/viewport_width=2480
+window/size/viewport_height=1440
 window/energy_saving/keep_screen_on=false
+window/stretch/scale=1.5
+window/stretch/scale_mode="integer"
 
 [gdnative]
 
-singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
+singletons=["res://addons/godot-git-plugin/git_api.gdnlib"]
 
 [physics]
 
@@ -40,4 +34,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+2d/sdf/scale=0
+environment/defaults/default_environment="res://default_env.tres"

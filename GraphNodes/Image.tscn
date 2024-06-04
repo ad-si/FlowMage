@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cvfgkpaefaga2"]
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id="1"]
 script/source = "extends GraphNode
 
 var current_path := \"\"
@@ -22,62 +22,53 @@ func _on_Button_pressed():
 "
 
 [node name="ImageSelectNode" type="GraphNode"]
-margin_right = 200.0
-margin_bottom = 100.0
-rect_scale = Vector2( 1, 1.00473 )
+offset_right = 200.0
+offset_bottom = 100.0
+scale = Vector2(1, 1.00473)
 title = "Load Image"
-show_close = true
 slot/0/left_enabled = false
 slot/0/left_type = 0
-slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color( 1, 1, 1, 1 )
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
 slot/1/left_enabled = false
 slot/1/left_type = 0
-slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
 slot/1/right_enabled = false
 slot/1/right_type = 0
-slot/1/right_color = Color( 1, 1, 1, 1 )
-script = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = SubResource("1")
 
 [node name="Wrapper" type="Control" parent="."]
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 184.0
-margin_bottom = 24.0
+layout_mode = 2
 
 [node name="Button" type="Button" parent="Wrapper"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -80.0
-margin_top = 5.0
-margin_right = 80.0
-margin_bottom = 20.0
+offset_left = -80.0
+offset_top = 5.0
+offset_right = 80.0
+offset_bottom = 20.0
 text = "Open File"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LineEdit" type="LineEdit" parent="Wrapper"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -80.0
-margin_top = 35.0
-margin_right = 80.0
-margin_bottom = 55.7411
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -80.0
+offset_top = 35.0
+offset_right = 80.0
+offset_bottom = 55.7411
 
 [node name="Output Slot" type="Control" parent="."]
-margin_left = 16.0
-margin_top = 25.0
-margin_right = 184.0
-margin_bottom = 25.0
+layout_mode = 2
 
-[connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]
 [connection signal="pressed" from="Wrapper/Button" to="." method="_on_Button_pressed"]
