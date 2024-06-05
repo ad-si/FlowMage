@@ -5,12 +5,10 @@ script/source = "extends GraphNode
 
 var current_path := \"\"
 
-signal file_dialog_request(source_node)
-
 
 func set_loaded_path(new_path):
 	current_path = new_path
-	$Wrapper/LineEdit.set_text(new_path)
+	$LineEdit.set_text(new_path)
 
 
 func _on_GraphNode_close_request():
@@ -18,14 +16,28 @@ func _on_GraphNode_close_request():
 
 
 func _on_Button_pressed():
-	emit_signal(\"file_dialog_request\", get_instance_id())
+	print(\"Button was pressed\")
+	var fileDialog := FileDialog.new()
+	fileDialog.title = \"Select An Image\"
+	fileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	fileDialog.connect(\"file_selected\", Callable(self, \"on_file_selected\"))
+
+	add_child(fileDialog)
+	fileDialog.popup(Rect2(100, 100, 700, 500))
+
+	#file_dialog_request.emit(get_instance_id())
+
+func on_file_selected(filePath : String) :
+	print(\"Selected file:\", filePath)
+	current_path = filePath
+	$LineEdit.set_text(filePath)
 "
 
 [node name="ImageSelectNode" type="GraphNode"]
 offset_right = 200.0
-offset_bottom = 100.0
+offset_bottom = 121.0
 scale = Vector2(1, 1.00473)
-title = "Load Image"
+title = "Image"
 slot/0/left_enabled = false
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -44,31 +56,25 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
 script = SubResource("1")
 
-[node name="Wrapper" type="Control" parent="."]
+[node name="Button" type="Button" parent="."]
 layout_mode = 2
+text = "Select Image"
 
-[node name="Button" type="Button" parent="Wrapper"]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -80.0
-offset_top = 5.0
-offset_right = 80.0
-offset_bottom = 20.0
-text = "Open File"
-
-[node name="LineEdit" type="LineEdit" parent="Wrapper"]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -80.0
-offset_top = 35.0
-offset_right = 80.0
-offset_bottom = 55.7411
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
 
 [node name="Output Slot" type="Control" parent="."]
 layout_mode = 2
 
-[connection signal="pressed" from="Wrapper/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

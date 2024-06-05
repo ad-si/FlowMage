@@ -24,6 +24,11 @@ window/energy_saving/keep_screen_on=false
 window/stretch/scale=1.5
 window/stretch/scale_mode="integer"
 
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
 [gdnative]
 
 singletons=["res://addons/godot-git-plugin/git_api.gdnlib"]

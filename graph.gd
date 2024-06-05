@@ -14,6 +14,7 @@ var last_popup_position = null # Vertex
 var last_popup_source_id = null # Instance id
 const imageNodeToPath := {} # Mappings of `nodeName: path`
 
+
 func _ready():
 	for graph_node in graph_nodes:
 		$NodeSelector.add_item(graph_node.name)
@@ -63,18 +64,13 @@ func _on_PopupMenu_id_pressed(id: int):
 	var selected_node = graph_nodes[id]
 	var node_instance = selected_node.scene.instantiate()
 
-	if selected_node.name == "Input/Image":
-		node_instance.connect(
-			"file_dialog_request",
-			Callable(self, "selet_image_node")
-		)
-
 	if last_popup_position != null:
 		node_instance.set_position(last_popup_position)
 
 	add_child(node_instance)
 
 func _on_file_dialog_request(source_node_id):
+	print("Open File Dialog")
 	$"../../FileDialog".popup()
 	last_popup_source_id = source_node_id
 

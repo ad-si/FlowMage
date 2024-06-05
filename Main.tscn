@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dn3pv41edvkkt"]
+[gd_scene load_steps=5 format=3 uid="uid://dn3pv41edvkkt"]
 
 [ext_resource type="Script" path="res://display_image.gd" id="1"]
+[ext_resource type="Script" path="res://Main.gd" id="1_0jabs"]
 [ext_resource type="Script" path="res://graph.gd" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
@@ -15,6 +16,7 @@ offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("1")
+script = ExtResource("1_0jabs")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -53,10 +55,10 @@ script = ExtResource("3")
 
 [node name="Show" type="GraphNode" parent="Control/Panel Left/GraphEdit"]
 layout_mode = 0
-offset_left = 891.0
-offset_top = 791.0
-offset_right = 976.0
-offset_bottom = 846.0
+offset_left = 887.0
+offset_top = 778.0
+offset_right = 972.0
+offset_bottom = 833.0
 mouse_filter = 1
 position_offset = Vector2(887, 778)
 title = "SHOW"
