@@ -29,6 +29,7 @@ The missing node / flow based GUI for [ImageMagick].
 - [ImprovCV] - Portable, open source, modular computer vision system
 - [Nimp] - Node-based image manipulation program (webapp)
 - [nip2] - Spreadsheet-like GUI for [libvips].
+- [PaperVision] - Node editor interface for OpenCV.
 - [Pictonode] - Node-based image editor powered by [GEGL].
 - [PixaFlux] - CG materials creator with a non-destructive, node-based workflow
 
@@ -45,5 +46,6 @@ The missing node / flow based GUI for [ImageMagick].
 [libvips]: https://github.com/libvips/libvips
 [Nimp]: https://nimp.app/
 [nip2]: https://github.com/libvips/nip2
+[PaperVision]: https://github.com/deltacv/PaperVision
 [Pictonode]: https://github.com/TeamPictonode/pictonode
 [PixaFlux]: http://www.pixaflux.com/
