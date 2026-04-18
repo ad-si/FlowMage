@@ -3,6 +3,7 @@
 /.godot
 /addons/*
 !/addons/flatcv/
+/todos.md
 bin
 build
 lib
