@@ -16,6 +16,7 @@ var last_popup_position = null  # Vertex
 var last_popup_source_id = null  # Instance id
 var node_to_replace: GraphNode = null
 const imageNodeToPath := {}  # Mappings of `nodeName: path`
+var _synthesis_generation: int = 0
 
 
 func _ready():
@@ -30,32 +31,81 @@ func _center_on_show():
   scroll_offset = (show_node.position_offset - size / 2 + show_node.size / 2)
 
 
-func _evaluate_node(node_name: StringName, connections: Array) -> Image:
+func _evaluate_node(node_name: StringName, connections: Array, gen: int) -> Image:
   var input_image: Image = null
   for conn in connections:
     if conn.to_node == node_name:
-      input_image = _evaluate_node(conn.from_node, connections)
+      input_image = await _evaluate_node(conn.from_node, connections, gen)
+      if gen != _synthesis_generation:
+        return null
       break
   var node := get_node_or_null(NodePath(String(node_name)))
   if node == null or not node.has_method("evaluate"):
     return input_image
-  return node.evaluate(input_image)
+
+  if node.has_method("show_spinner"):
+    node.show_spinner()
+
+  var result: Image
+  if node.has_method("evaluate_async"):
+    result = await node.evaluate_async(input_image)
+  else:
+    result = node.evaluate(input_image)
+
+  if gen != _synthesis_generation:
+    if node.has_method("hide_spinner"):
+      node.hide_spinner()
+    return null
+
+  if node.has_method("hide_spinner"):
+    node.hide_spinner()
+
+  return result
 
 
 func trigger_image_synthesis():
+  _synthesis_generation += 1
+  _do_synthesis(_synthesis_generation)
+
+
+func _do_synthesis(gen: int) -> void:
+  _clear_all_node_spinners()
+
   var connection_list := get_connection_list()
+  var has_work := false
+  for conn in connection_list:
+    if conn.to_node == &"Show":
+      has_work = true
+      break
+
+  var texture_rect := get_node_or_null("../../TextureRect")
+  if has_work and texture_rect and texture_rect.has_method("show_spinner"):
+    texture_rect.show_spinner()
+
   var inputs: Array = [null, null, null, null]
   for conn in connection_list:
     if conn.to_node == &"Show":
       var slot: int = conn.to_port
       if slot >= 0 and slot < inputs.size():
-        inputs[slot] = _evaluate_node(conn.from_node, connection_list)
+        var image = await _evaluate_node(conn.from_node, connection_list, gen)
+        if gen != _synthesis_generation:
+          return
+        inputs[slot] = image
 
   var result := _compose_show_output(inputs)
+  if gen != _synthesis_generation:
+    return
 
-  var texture_rect := $"../../TextureRect"
   if texture_rect:
+    if texture_rect.has_method("hide_spinner"):
+      texture_rect.hide_spinner()
     texture_rect.render_image(result)
+
+
+func _clear_all_node_spinners() -> void:
+  for child in get_children():
+    if child.has_method("hide_spinner"):
+      child.hide_spinner()
 
 
 func _compose_show_output(inputs: Array) -> Image:

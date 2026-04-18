@@ -1,9 +1,12 @@
 class_name FlowNode
 extends GraphNode
 
+const FlowSpinner := preload("res://GraphNodes/spinner.gd")
+
 signal replace_requested(node)
 
 var pass_through: bool = false
+var _spinner: Control = null
 
 
 func _ready() -> void:
@@ -12,6 +15,10 @@ func _ready() -> void:
 
 func _build_titlebar_buttons() -> void:
   var titlebar := get_titlebar_hbox()
+
+  _spinner = FlowSpinner.new()
+  _spinner.custom_minimum_size = Vector2(22, 22)
+  titlebar.add_child(_spinner)
 
   if get_input_port_count() > 0:
     var pass_btn := _make_icon_button("⇥", "Toggle pass-through mode", true)
@@ -81,10 +88,36 @@ func _on_docs_pressed() -> void:
   dialog.popup_centered()
 
 
+func show_spinner() -> void:
+  if _spinner:
+    _spinner.set_spinning(true)
+
+
+func hide_spinner() -> void:
+  if _spinner:
+    _spinner.set_spinning(false)
+
+
 func evaluate(input):
   if pass_through:
     return input
   return _evaluate_internal(input)
+
+
+# _evaluate_internal runs on a WorkerThreadPool thread.
+# Overrides must be thread-safe: no scene-tree mutation, no UI access,
+# and only read node state that isn't mutated from the main thread mid-eval.
+func evaluate_async(input):
+  if pass_through:
+    return input
+  var holder := {"result": null}
+  var task_id: int = WorkerThreadPool.add_task(
+    func(): holder.result = _evaluate_internal(input)
+  )
+  while not WorkerThreadPool.is_task_completed(task_id):
+    await get_tree().process_frame
+  WorkerThreadPool.wait_for_task_completion(task_id)
+  return holder.result
 
 
 func _evaluate_internal(input):
