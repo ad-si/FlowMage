@@ -1,5 +1,7 @@
 extends GraphEdit
 
+const FlowNode := preload("res://GraphNodes/flow_node.gd")
+
 const graph_nodes := [
   {
     "name": "Input/Image",
@@ -12,6 +14,7 @@ const graph_nodes := [
 ]
 var last_popup_position = null  # Vertex
 var last_popup_source_id = null  # Instance id
+var node_to_replace: GraphNode = null
 const imageNodeToPath := {}  # Mappings of `nodeName: path`
 
 
@@ -53,19 +56,55 @@ func trigger_image_synthesis():
 
 
 func _on_GraphEdit_popup_request(pos):
+  node_to_replace = null
   $NodeSelector.set_position(pos)
   $NodeSelector.popup()
 
   last_popup_position = pos - get_screen_position()
 
 
+func _on_replace_requested(node) -> void:
+  node_to_replace = node
+  last_popup_position = null
+  var popup_pos: Vector2 = node.get_screen_position() + Vector2(0, node.size.y * node.scale.y)
+  $NodeSelector.set_position(popup_pos)
+  $NodeSelector.popup()
+
+
+func _transfer_connections(old_node: GraphNode, new_node: GraphNode) -> void:
+  var old_name := old_node.name
+  var new_name := new_node.name
+  for conn in get_connection_list():
+    if conn.from_node == old_name:
+      disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+      if conn.from_port < new_node.get_output_port_count():
+        connect_node(new_name, conn.from_port, conn.to_node, conn.to_port)
+    elif conn.to_node == old_name:
+      disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+      if conn.to_port < new_node.get_input_port_count():
+        connect_node(conn.from_node, conn.from_port, new_name, conn.to_port)
+
+
 func _on_PopupMenu_id_pressed(id: int):
   var selected_node = graph_nodes[id]
   var node_instance = selected_node.scene.instantiate()
-  add_child(node_instance)
 
-  if last_popup_position != null:
-    node_instance.position_offset = (last_popup_position + scroll_offset) / zoom
+  if node_to_replace != null:
+    var old_node := node_to_replace
+    node_to_replace = null
+    node_instance.position_offset = old_node.position_offset
+    add_child(node_instance)
+    _transfer_connections(old_node, node_instance)
+    old_node.queue_free()
+  else:
+    add_child(node_instance)
+    if last_popup_position != null:
+      node_instance.position_offset = (last_popup_position + scroll_offset) / zoom
+
+  if node_instance is FlowNode:
+    node_instance.replace_requested.connect(_on_replace_requested)
+
+  trigger_image_synthesis()
 
 
 func _on_file_dialog_request(source_node_id):

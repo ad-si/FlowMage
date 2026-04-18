@@ -11,10 +11,6 @@ Powered by [Godot] and [FlatCV].
 
 ## Roadmap
 
-- [ ] Add buttons to nodes
-  - [ ] Switch to pass-through mode
-  - [ ] Replace node
-  - [ ] Information / Help
 - [ ] Image from URL
 - [ ] Integrate OpenCV (https://github.com/Keyaku/bouncy)
 
