@@ -36,7 +36,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 30.0
 grow_horizontal = 2
-text = "  FlowMagick"
+text = "  FlowMage"
 vertical_alignment = 1
 
 [node name="GraphEdit" type="GraphEdit" parent="Control/Panel Left" unique_id=818675248]

@@ -1,4 +1,4 @@
-# FlowMagick
+# FlowMage
 
 The missing node / flow based GUI for [ImageMagick].
 
