@@ -9,10 +9,24 @@ Powered by [Godot] and [FlatCV].
 ![Screenshot of the app](screenshots/2026-04-18t1221_app.png)
 
 
-## Roadmap
+## Installation
 
-- [ ] Image from URL
-- [ ] Integrate OpenCV (https://github.com/Keyaku/bouncy)
+Requirements:
+
+- [Godot] 4.6 or later
+- A C++ compiler toolchain (for building the FlatCV GDExtension)
+- [uv] (used to run `scons` for the extension build)
+
+[uv]: https://docs.astral.sh/uv/
+
+Steps:
+
+```sh
+git clone https://github.com/ad-si/FlowMage.git
+cd FlowMage
+make build-ext
+godot --path .
+```
 
 
 ## Related
