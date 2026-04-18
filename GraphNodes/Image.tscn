@@ -20,17 +20,23 @@ func _on_Button_pressed():
 	var fileDialog := FileDialog.new()
 	fileDialog.title = \"Select An Image\"
 	fileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	fileDialog.access = FileDialog.ACCESS_FILESYSTEM
+	fileDialog.use_native_dialog = true
+	fileDialog.filters = PackedStringArray([
+		\"*.png,*.jpg,*.jpeg,*.webp,*.bmp,*.gif,*.tga,*.svg ; Images\",
+	])
 	fileDialog.connect(\"file_selected\", Callable(self, \"on_file_selected\"))
 
 	add_child(fileDialog)
 	fileDialog.popup(Rect2(100, 100, 700, 500))
 
-	#file_dialog_request.emit(get_instance_id())
-
 func on_file_selected(filePath : String) :
 	print(\"Selected file:\", filePath)
 	current_path = filePath
 	$LineEdit.set_text(filePath)
+	var graph := get_parent()
+	if graph and graph.has_method(\"trigger_image_synthesis\"):
+		graph.trigger_image_synthesis()
 "
 
 [node name="ImageSelectNode" type="GraphNode"]

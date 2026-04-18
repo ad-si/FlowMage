@@ -22,6 +22,8 @@ The missing node / flow based GUI for [ImageMagick].
 - [Cascade] - Node-based image editor with GPU-acceleration
 - [chaiNNer] - Node-based image processing and AI upscaling GUI
 - [Conjure] - Simple graphical desktop app for [ImageMagick].
+- [Cresliant] - Node-based image editor made in Python.
+- [Effector] - TODO.
 - [FotoKilof] - Comprehensive desktop app for [ImageMagick].
 - [GIE] - Generative Image Editor is a node based image editor
 - [GimelStudio] - Cross-platform non-destructive, node based 2D image editor
@@ -31,12 +33,15 @@ The missing node / flow based GUI for [ImageMagick].
 - [nip2] - Spreadsheet-like GUI for [libvips].
 - [PaperVision] - Node editor interface for OpenCV.
 - [Pictonode] - Node-based image editor powered by [GEGL].
-- [PixaFlux] - CG materials creator with a non-destructive, node-based workflow
+- [PixaFlux] - CG materials creator with a non-destructive, node-based workflow.
+- [PixiEditor] - Universal 2D Graphics Editor
 
 [Adaptive Vision Studio]: https://www.adaptive-vision.com/en/software/studio/
 [Cascade]: https://github.com/ttddee/Cascade
 [chaiNNer]: https://github.com/chaiNNer-org/chaiNNer
 [Conjure]: https://github.com/nate-xyz/conjure
+[Cresliant]: https://github.com/Cresliant/Cresliant
+[Effector]: https://notabug.org/grindhold/effector
 [FotoKilof]: https://github.com/TeaM-TL/FotoKilof
 [GEGL]: https://gegl.org
 [GIE]: https://github.com/alexge50/gie
@@ -49,3 +54,4 @@ The missing node / flow based GUI for [ImageMagick].
 [PaperVision]: https://github.com/deltacv/PaperVision
 [Pictonode]: https://github.com/TeamPictonode/pictonode
 [PixaFlux]: http://www.pixaflux.com/
+[PixiEditor]: https://pixieditor.net/docs/usage/node-graph/getting-started-with-node-graph/
