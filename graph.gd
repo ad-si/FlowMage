@@ -6,12 +6,15 @@ const graph_nodes := [
   {
     "name": "Input/Image",
     "scene": preload("res://GraphNodes/Image.tscn"),
+    "color": Color(0.30, 0.55, 0.85),
   },
   {
     "name": "Transform3D/Grayscale",
     "scene": preload("res://GraphNodes/Grayscale.tscn"),
+    "color": Color(0.85, 0.55, 0.25),
   }
 ]
+const SHOW_NODE_COLOR := Color(0.75, 0.30, 0.40)
 var last_popup_position = null  # Vertex
 var last_popup_source_id = null  # Instance id
 var node_to_replace: GraphNode = null
@@ -22,6 +25,7 @@ var _synthesis_generation: int = 0
 func _ready():
   for graph_node in graph_nodes:
     $NodeSelector.add_item(graph_node.name)
+  FlowNode.style_graph_node($Show, SHOW_NODE_COLOR)
   await get_tree().process_frame
   _center_on_show()
 
@@ -213,6 +217,8 @@ func _on_PopupMenu_id_pressed(id: int):
     if last_popup_position != null:
       node_instance.position_offset = (last_popup_position + scroll_offset) / zoom
 
+  FlowNode.style_graph_node(node_instance, selected_node.color)
+
   if node_instance is FlowNode:
     node_instance.replace_requested.connect(_on_replace_requested)
 
@@ -249,6 +255,26 @@ func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
   trigger_image_synthesis()
 
 
-func _on_GraphEdit_delete_nodes_request():
-#	TODO: Delete node from imageNodeToPath
-  pass  # Replace with function body.
+func _unhandled_key_input(event: InputEvent) -> void:
+  if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_BACKSPACE:
+    var selected: Array = []
+    for child in get_children():
+      if child is GraphNode and child.selected:
+        selected.append(child.name)
+    if not selected.is_empty():
+      _on_GraphEdit_delete_nodes_request(selected)
+      accept_event()
+
+
+func _on_GraphEdit_delete_nodes_request(nodes: Array) -> void:
+  for node_name in nodes:
+    if String(node_name) == "Show":
+      continue
+    var node := get_node_or_null(NodePath(String(node_name)))
+    if node == null:
+      continue
+    for conn in get_connection_list():
+      if conn.from_node == node_name or conn.to_node == node_name:
+        disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+    node.queue_free()
+  trigger_image_synthesis()
