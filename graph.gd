@@ -267,14 +267,91 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _on_GraphEdit_delete_nodes_request(nodes: Array) -> void:
+  var filtered: Array = []
   for node_name in nodes:
-    if String(node_name) == "Show":
-      continue
+    if String(node_name) != "Show":
+      filtered.append(node_name)
+  if filtered.is_empty():
+    return
+  if filtered.size() > 1:
+    _confirm_delete_nodes(filtered)
+  else:
+    _perform_delete_nodes(filtered)
+
+
+func _confirm_delete_nodes(nodes: Array) -> void:
+  var dialog := ConfirmationDialog.new()
+  dialog.title = "Delete nodes"
+  dialog.dialog_text = "Delete %d selected nodes?" % nodes.size()
+  dialog.exclusive = false
+  get_tree().current_scene.add_child(dialog)
+  dialog.confirmed.connect(func(): _perform_delete_nodes(nodes))
+  dialog.confirmed.connect(dialog.queue_free)
+  dialog.canceled.connect(dialog.queue_free)
+  dialog.close_requested.connect(dialog.queue_free)
+  dialog.popup_centered()
+
+
+func _perform_delete_nodes(nodes: Array) -> void:
+  var deleted_set := {}
+  for node_name in nodes:
+    deleted_set[StringName(node_name)] = true
+
+  var connection_list := get_connection_list()
+  var relinks: Array = []
+
+  for node_name in nodes:
+    var sname := StringName(node_name)
+    var incoming := {}  # to_port -> conn from a surviving node
+    var outgoing := {}  # from_port -> Array[conn] to surviving nodes
+    for conn in connection_list:
+      if conn.to_node == sname and not deleted_set.has(conn.from_node):
+        incoming[conn.to_port] = conn
+      if conn.from_node == sname and not deleted_set.has(conn.to_node):
+        if not outgoing.has(conn.from_port):
+          outgoing[conn.from_port] = []
+        outgoing[conn.from_port].append(conn)
+    for port in outgoing.keys():
+      if incoming.has(port):
+        var in_conn = incoming[port]
+        for out_conn in outgoing[port]:
+          (
+            relinks
+            . append(
+              {
+                "from_node": in_conn.from_node,
+                "from_port": in_conn.from_port,
+                "to_node": out_conn.to_node,
+                "to_port": out_conn.to_port,
+              }
+            )
+          )
+
+  for conn in connection_list:
+    if deleted_set.has(conn.from_node) or deleted_set.has(conn.to_node):
+      disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+
+  for node_name in nodes:
     var node := get_node_or_null(NodePath(String(node_name)))
-    if node == null:
-      continue
-    for conn in get_connection_list():
-      if conn.from_node == node_name or conn.to_node == node_name:
-        disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
-    node.queue_free()
+    if node != null:
+      node.queue_free()
+
+  for r in relinks:
+    if _relink_is_compatible(r):
+      connect_node(r.from_node, r.from_port, r.to_node, r.to_port)
+
   trigger_image_synthesis()
+
+
+func _relink_is_compatible(r: Dictionary) -> bool:
+  var from_node := get_node_or_null(NodePath(String(r.from_node)))
+  var to_node := get_node_or_null(NodePath(String(r.to_node)))
+  if from_node == null or to_node == null:
+    return false
+  if r.from_port >= from_node.get_output_port_count():
+    return false
+  if r.to_port >= to_node.get_input_port_count():
+    return false
+  var from_type: int = from_node.get_output_port_type(r.from_port)
+  var to_type: int = to_node.get_input_port_type(r.to_port)
+  return from_type == to_type or is_valid_connection_type(from_type, to_type)

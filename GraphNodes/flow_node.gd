@@ -111,14 +111,8 @@ func _on_replace_pressed() -> void:
 
 func _on_delete_pressed() -> void:
   var graph := get_parent()
-  if graph is GraphEdit:
-    var my_name := name
-    for conn in graph.get_connection_list():
-      if conn.from_node == my_name or conn.to_node == my_name:
-        graph.disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
-  queue_free()
-  if graph and graph.has_method("trigger_image_synthesis"):
-    graph.call_deferred("trigger_image_synthesis")
+  if graph and graph.has_method("_perform_delete_nodes"):
+    graph.call_deferred("_perform_delete_nodes", [name])
 
 
 func _on_docs_pressed() -> void:
