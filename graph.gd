@@ -44,15 +44,77 @@ func _evaluate_node(node_name: StringName, connections: Array) -> Image:
 
 func trigger_image_synthesis():
   var connection_list := get_connection_list()
-  var result: Image = null
+  var inputs: Array = [null, null, null, null]
   for conn in connection_list:
     if conn.to_node == &"Show":
-      result = _evaluate_node(conn.from_node, connection_list)
-      break
+      var slot: int = conn.to_port
+      if slot >= 0 and slot < inputs.size():
+        inputs[slot] = _evaluate_node(conn.from_node, connection_list)
+
+  var result := _compose_show_output(inputs)
 
   var texture_rect := $"../../TextureRect"
   if texture_rect:
     texture_rect.render_image(result)
+
+
+func _compose_show_output(inputs: Array) -> Image:
+  # Slot layout:  0 1
+  #               2 3
+  var connected: Array = []
+  for i in inputs.size():
+    if inputs[i] != null:
+      connected.append(i)
+
+  if connected.is_empty():
+    return null
+
+  var first: Image = inputs[connected[0]]
+  var cell_w: int = first.get_width()
+  var cell_h: int = first.get_height()
+  var fmt: int = first.get_format()
+  var src_rect := Rect2i(0, 0, cell_w, cell_h)
+
+  if connected.size() == 1:
+    return first
+
+  var result: Image
+  if connected.size() == 2:
+    var a: int = connected[0]
+    var b: int = connected[1]
+    if (a / 2) == (b / 2):  # same row (0,1) or (2,3): side by side
+      result = Image.create_empty(cell_w * 2, cell_h, false, fmt)
+      result.blit_rect(_prepare_cell(inputs[a], cell_w, cell_h, fmt), src_rect, Vector2i(0, 0))
+      result.blit_rect(_prepare_cell(inputs[b], cell_w, cell_h, fmt), src_rect, Vector2i(cell_w, 0))
+    else:  # stacked above each other, in slot order
+      result = Image.create_empty(cell_w, cell_h * 2, false, fmt)
+      result.blit_rect(_prepare_cell(inputs[a], cell_w, cell_h, fmt), src_rect, Vector2i(0, 0))
+      result.blit_rect(_prepare_cell(inputs[b], cell_w, cell_h, fmt), src_rect, Vector2i(0, cell_h))
+    return result
+
+  # 3 or 4 inputs: 2x2 grid, each at its slot position; missing slots left blank.
+  result = Image.create_empty(cell_w * 2, cell_h * 2, false, fmt)
+  for slot in connected:
+    var col: int = slot % 2
+    var row: int = slot / 2
+    result.blit_rect(
+      _prepare_cell(inputs[slot], cell_w, cell_h, fmt),
+      src_rect,
+      Vector2i(col * cell_w, row * cell_h)
+    )
+  return result
+
+
+func _prepare_cell(img: Image, cell_w: int, cell_h: int, fmt: int) -> Image:
+  var cell: Image = img
+  if cell.get_format() != fmt:
+    cell = cell.duplicate()
+    cell.convert(fmt)
+  if cell.get_width() != cell_w or cell.get_height() != cell_h:
+    if cell == img:
+      cell = cell.duplicate()
+    cell.resize(cell_w, cell_h)
+  return cell
 
 
 func _on_GraphEdit_popup_request(pos):
@@ -121,13 +183,12 @@ func _on_FileDialog_file_selected(path):
 
 
 func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, to_slot: int):
-  # Ensure there is only 1 connection to `Show`
-  if to == "Show":
-    for connection in get_connection_list():
-      if connection.to_node == &"Show":
-        disconnect_node(
-          connection.from_node, connection.from_port, connection.to_node, connection.to_port
-        )
+  # Each input slot accepts at most 1 incoming connection
+  for connection in get_connection_list():
+    if connection.to_node == StringName(to) and connection.to_port == to_slot:
+      disconnect_node(
+        connection.from_node, connection.from_port, connection.to_node, connection.to_port
+      )
   self.connect_node(from, from_slot, to, to_slot)
 
   trigger_image_synthesis()

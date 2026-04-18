@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git ls-remote *)",
       "Bash(godot --headless --check-only res://GraphNodes/flow_node.gd)",
-      "Bash(uvx --from 'gdtoolkit==4.*' gdparse GraphNodes/flow_node.gd)"
+      "Bash(uvx --from 'gdtoolkit==4.*' gdparse GraphNodes/flow_node.gd)",
+      "Bash(godot --path . --headless --check-only --quit)"
     ]
   }
 }
