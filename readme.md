@@ -1,8 +1,12 @@
 # FlowMage
 
-The missing node / flow based GUI for [ImageMagick].
+The missing flow/graph based GUI for image editing.
+Powered by [Godot] and [FlatCV].
 
-[ImageMagick]: https://imagemagick.org/
+[Godot]: https://godotengine.org
+[FlatCV]: https://github.com/ad-si/FlatCV
+
+![Screenshot of the app](screenshots/2026-04-18t1221_app.png)
 
 
 ## Roadmap
