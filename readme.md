@@ -6,7 +6,7 @@ Powered by [Godot] and [FlatCV].
 [Godot]: https://godotengine.org
 [FlatCV]: https://github.com/ad-si/FlatCV
 
-![Screenshot of the app](screenshots/2026-04-18t1221_app.png)
+![Screenshot of the app](screenshots/2026-04-18t1419_app.png)
 
 
 ## Installation
