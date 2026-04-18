@@ -11,7 +11,6 @@ Powered by [Godot] and [FlatCV].
 
 ## Roadmap
 
-- [ ] Split `GraphEdit` and `Image` with draggable separator
 - [ ] Add buttons to nodes
   - [ ] Switch to pass-through mode
   - [ ] Replace node

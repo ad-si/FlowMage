@@ -70,7 +70,7 @@ func _on_PopupMenu_id_pressed(id: int):
 
 func _on_file_dialog_request(source_node_id):
   print("Open File Dialog")
-  $"../../FileDialog".popup()
+  $"../../../FileDialog".popup()
   last_popup_source_id = source_node_id
 
 

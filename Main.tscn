@@ -16,7 +16,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("1")
 script = ExtResource("1_0jabs")
 
-[node name="Control" type="Control" parent="." unique_id=1249581826]
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=1249581826]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,13 +24,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel Left" type="Panel" parent="Control" unique_id=910314550]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.5
-anchor_bottom = 1.0
+[node name="Panel Left" type="Panel" parent="HSplitContainer" unique_id=910314550]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Control/Panel Left" unique_id=356065981]
+[node name="Label" type="Label" parent="HSplitContainer/Panel Left" unique_id=356065981]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -39,7 +38,7 @@ grow_horizontal = 2
 text = "  FlowMage"
 vertical_alignment = 1
 
-[node name="GraphEdit" type="GraphEdit" parent="Control/Panel Left" unique_id=818675248]
+[node name="GraphEdit" type="GraphEdit" parent="HSplitContainer/Panel Left" unique_id=818675248]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,7 +53,7 @@ minimap_size = Vector2(200, 100)
 show_zoom_label = true
 script = ExtResource("3")
 
-[node name="Show" type="GraphNode" parent="Control/Panel Left/GraphEdit" unique_id=1871746750]
+[node name="Show" type="GraphNode" parent="HSplitContainer/Panel Left/GraphEdit" unique_id=1871746750]
 layout_mode = 0
 offset_left = 887.0
 offset_top = 778.0
@@ -73,22 +72,20 @@ slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
 
-[node name="Input Slot" type="Control" parent="Control/Panel Left/GraphEdit/Show" unique_id=1963172890]
+[node name="Input Slot" type="Control" parent="HSplitContainer/Panel Left/GraphEdit/Show" unique_id=1963172890]
 layout_mode = 2
 
-[node name="NodeSelector" type="PopupMenu" parent="Control/Panel Left/GraphEdit" unique_id=1819195248]
+[node name="NodeSelector" type="PopupMenu" parent="HSplitContainer/Panel Left/GraphEdit" unique_id=1819195248]
 
-[node name="TextureRect" type="TextureRect" parent="Control" unique_id=666873129]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TextureRect" type="TextureRect" parent="HSplitContainer" unique_id=666873129]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("1")
 
-[node name="Placeholder" type="Label" parent="Control/TextureRect"]
+[node name="Placeholder" type="Label" parent="HSplitContainer/TextureRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,13 +99,13 @@ text = "Image output must be connected to Show
 to display something here."
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 
-[node name="FileDialog" type="FileDialog" parent="Control" unique_id=1169792773]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=1169792773]
 access = 2
 filters = PackedStringArray("*.jpg", "*.jpeg", "*.png", "*.gif")
 
-[connection signal="connection_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_connection_request"]
-[connection signal="delete_nodes_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_delete_nodes_request"]
-[connection signal="disconnection_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_disconnection_request"]
-[connection signal="popup_request" from="Control/Panel Left/GraphEdit" to="Control/Panel Left/GraphEdit" method="_on_GraphEdit_popup_request"]
-[connection signal="id_pressed" from="Control/Panel Left/GraphEdit/NodeSelector" to="Control/Panel Left/GraphEdit" method="_on_PopupMenu_id_pressed"]
-[connection signal="file_selected" from="Control/FileDialog" to="Control/Panel Left/GraphEdit" method="_on_FileDialog_file_selected"]
+[connection signal="connection_request" from="HSplitContainer/Panel Left/GraphEdit" to="HSplitContainer/Panel Left/GraphEdit" method="_on_GraphEdit_connection_request"]
+[connection signal="delete_nodes_request" from="HSplitContainer/Panel Left/GraphEdit" to="HSplitContainer/Panel Left/GraphEdit" method="_on_GraphEdit_delete_nodes_request"]
+[connection signal="disconnection_request" from="HSplitContainer/Panel Left/GraphEdit" to="HSplitContainer/Panel Left/GraphEdit" method="_on_GraphEdit_disconnection_request"]
+[connection signal="popup_request" from="HSplitContainer/Panel Left/GraphEdit" to="HSplitContainer/Panel Left/GraphEdit" method="_on_GraphEdit_popup_request"]
+[connection signal="id_pressed" from="HSplitContainer/Panel Left/GraphEdit/NodeSelector" to="HSplitContainer/Panel Left/GraphEdit" method="_on_PopupMenu_id_pressed"]
+[connection signal="file_selected" from="FileDialog" to="HSplitContainer/Panel Left/GraphEdit" method="_on_FileDialog_file_selected"]
