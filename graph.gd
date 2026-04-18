@@ -27,35 +27,29 @@ func _center_on_show():
   scroll_offset = (show_node.position_offset - size / 2 + show_node.size / 2)
 
 
-# Sorted with increasing distance to node
-func find_upstream_connections(connection_list, node):
-  var upstream_connections := []
-  for connection in connection_list:
-    if connection.to_node == node:
-      upstream_connections.append_array(
-        find_upstream_connections(connection_list, connection.from_node)
-      )
-      upstream_connections.append(connection)
-  return upstream_connections
+func _evaluate_node(node_name: StringName, connections: Array) -> Image:
+  var input_image: Image = null
+  for conn in connections:
+    if conn.to_node == node_name:
+      input_image = _evaluate_node(conn.from_node, connections)
+      break
+  var node := get_node_or_null(NodePath(String(node_name)))
+  if node == null or not node.has_method("evaluate"):
+    return input_image
+  return node.evaluate(input_image)
 
 
 func trigger_image_synthesis():
   var connection_list := get_connection_list()
-  var relevant_connections = find_upstream_connections(connection_list, &"Show")
+  var result: Image = null
+  for conn in connection_list:
+    if conn.to_node == &"Show":
+      result = _evaluate_node(conn.from_node, connection_list)
+      break
 
   var texture_rect := $"../../TextureRect"
-  var image_path := ""
-
-  for conn in relevant_connections:
-    if String(conn.from_node).matchn("*ImageSelectNode*"):
-      var image_node := get_node_or_null(NodePath(String(conn.from_node)))
-      if image_node and image_node.current_path != "":
-        image_path = image_node.current_path
   if texture_rect:
-    if image_path != "":
-      texture_rect.render_image(image_path)
-    else:
-      texture_rect.clear()
+    texture_rect.render_image(result)
 
 
 func _on_GraphEdit_popup_request(pos):

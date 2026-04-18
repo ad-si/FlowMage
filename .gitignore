@@ -1,7 +1,8 @@
 *.import
 .import
 /.godot
-/addons
+/addons/*
+!/addons/flatcv/
 bin
 build
 lib

@@ -11,6 +11,15 @@ func set_loaded_path(new_path):
 	$LineEdit.set_text(new_path)
 
 
+func evaluate(_input):
+	if current_path == \"\":
+		return null
+	var image := Image.load_from_file(current_path)
+	if image == null:
+		push_warning(\"Failed to load image: %s\" % current_path)
+	return image
+
+
 func _on_GraphNode_close_request():
 	queue_free()
 

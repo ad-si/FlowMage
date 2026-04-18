@@ -1,0 +1,7 @@
+flatcv/
+godot-cpp/
+bin/
+.sconsign*.dblite
+*.o
+*.os
+*.obj

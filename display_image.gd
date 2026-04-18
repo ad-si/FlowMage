@@ -13,10 +13,8 @@ func clear():
     placeholder.visible = true
 
 
-func render_image(path: String):
-  var image := Image.load_from_file(path)
+func render_image(image: Image):
   if image == null:
-    push_warning("Failed to load image: %s" % path)
     clear()
     return
   texture = ImageTexture.create_from_image(image)

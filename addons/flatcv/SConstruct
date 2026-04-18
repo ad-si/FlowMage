@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import os
+import subprocess
+
+GODOT_CPP_URL = "https://github.com/godotengine/godot-cpp"
+# No 4.6-stable tag exists yet; track master at a pinned commit.
+GODOT_CPP_COMMIT = "4862a9dcf1471c9ea19680b9faadb5b6a9432092"
+GODOT_CPP_DIR = "godot-cpp"
+
+FLATCV_URL = "https://github.com/ad-si/FlatCV"
+FLATCV_COMMIT = "db388ac71ece522d17936f360877d4e60baf4966"
+FLATCV_DIR = "flatcv"
+
+
+def fetch_repo(url, directory, commit):
+    if os.path.isdir(directory):
+        return
+    print("Fetching {} into {}".format(url, directory))
+    subprocess.check_call(["git", "clone", url, directory])
+    subprocess.check_call(["git", "-C", directory, "checkout", commit])
+
+
+fetch_repo(GODOT_CPP_URL, GODOT_CPP_DIR, GODOT_CPP_COMMIT)
+fetch_repo(FLATCV_URL, FLATCV_DIR, FLATCV_COMMIT)
+
+env = SConscript("{}/SConstruct".format(GODOT_CPP_DIR))
+
+env.Append(CPPPATH=["src/", "{}/include/".format(FLATCV_DIR)])
+
+flatcv_sources = [
+    s for s in Glob("{}/src/*.c".format(FLATCV_DIR))
+    if os.path.basename(str(s)) != "cli.c"
+]
+wrapper_sources = Glob("src/*.cpp")
+sources = wrapper_sources + flatcv_sources
+
+library_name = "libflatcv{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
+library = env.SharedLibrary("bin/" + library_name, source=sources)
+Default(library)
