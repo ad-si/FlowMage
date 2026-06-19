@@ -16,3 +16,8 @@ format:
 .PHONY: build-ext
 build-ext:
 	cd addons/flatcv && uvx --from scons scons -j$$(sysctl -n hw.ncpu 2>/dev/null || nproc)
+
+
+.PHONY: start
+start:
+	godot --path .
