@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `make build-ext` — build the FlatCV GDExtension. The `SConstruct` clones `godot-cpp` and `FlatCV` at pinned commits into `addons/flatcv/` on first run, then compiles `libflatcv.<platform>.<target>.<arch>.<ext>` into `addons/flatcv/bin/`. Re-run after changing C/C++ sources.
 - `make format` — format all GDScript with `gdformat` (2-space indent). Apply before committing GDScript changes.
-- `godot --path .` — run the editor/game.
-- `godot --path . --headless --script addons/flatcv/test_flatcv.gd` — smoke-test that the FlatCV extension loaded and `FlatCV.rgba_to_grayscale` works.
+- `make start` — run the editor/game (`godot --path .`).
+- `make test` — run the headless test suite (`tests/run_tests.gd`). Imports the project first so the FlatCV GDExtension is registered, then runs every `test_*` method in `tests/test_*.gd`; exits non-zero on any failure. Requires `make build-ext` to have been run. Add a test file by creating `tests/test_<area>.gd` extending `tests/test_case.gd` and appending its path to `TEST_SCRIPTS` in `tests/run_tests.gd`.
+- `godot --path . --headless --script addons/flatcv/test_flatcv.gd` — quick smoke-test that the FlatCV extension loaded and `FlatCV.rgba_to_grayscale` works.
 - Godot 4.6+ is required (`compatibility_minimum = "4.6"` in `flatcv.gdextension`, `config/features=PackedStringArray("4.6")` in `project.godot`).
 
 ## Architecture

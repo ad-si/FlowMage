@@ -6,6 +6,7 @@ help: makefile
 GDSCRIPT_PATHS := \
 	*.gd \
 	GraphNodes/*.gd \
+	tests/*.gd \
 	addons/flatcv/test_flatcv.gd
 
 .PHONY: format
@@ -21,3 +22,10 @@ build-ext:
 .PHONY: start
 start:
 	godot --path .
+
+
+.PHONY: test
+test:
+	# Import first so the FlatCV GDExtension is registered before scripts load.
+	godot --path . --headless --import
+	godot --path . --headless --script tests/run_tests.gd
