@@ -23,9 +23,11 @@ func _on_Button_pressed():
   fileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
   fileDialog.access = FileDialog.ACCESS_FILESYSTEM
   fileDialog.use_native_dialog = true
-  fileDialog.filters = PackedStringArray([
-    "*.png,*.jpg,*.jpeg,*.webp,*.bmp,*.gif,*.tga,*.svg ; Images",
-  ])
+  fileDialog.filters = PackedStringArray(
+    [
+      "*.png,*.jpg,*.jpeg,*.webp,*.bmp,*.gif,*.tga,*.svg ; Images",
+    ]
+  )
   fileDialog.connect("file_selected", Callable(self, "on_file_selected"))
 
   add_child(fileDialog)

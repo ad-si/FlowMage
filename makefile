@@ -5,6 +5,7 @@ help: makefile
 
 GDSCRIPT_PATHS := \
 	*.gd \
+	GraphNodes/*.gd \
 	addons/flatcv/test_flatcv.gd
 
 .PHONY: format

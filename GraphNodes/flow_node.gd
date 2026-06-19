@@ -127,6 +127,89 @@ func _on_docs_pressed() -> void:
   dialog.popup_centered()
 
 
+# --- Parameter UI helpers -------------------------------------------------
+# Subclasses with parameters call these from their own `_ready()` (after
+# `super()`) to append labelled control rows below the node's port row.
+# Each `add_param_*` registers a value (returning its index) and wires the
+# control's change signal to update the cached value on the main thread and
+# re-run synthesis. `_evaluate_internal` reads values via `get_param(index)`,
+# which is safe to call from the worker thread because it only touches the
+# plain `_param_values` array, never a live Control.
+
+var _param_values: Array = []
+
+
+func get_param(index: int):
+  return _param_values[index]
+
+
+func _trigger_synthesis() -> void:
+  var graph := get_parent()
+  if graph and graph.has_method("trigger_image_synthesis"):
+    graph.trigger_image_synthesis()
+
+
+func _register_param(default_value) -> int:
+  var index := _param_values.size()
+  _param_values.append(default_value)
+  return index
+
+
+func _add_param_row(label_text: String, control: Control) -> void:
+  var row := HBoxContainer.new()
+  var label := Label.new()
+  label.text = label_text
+  label.custom_minimum_size = Vector2(70, 0)
+  row.add_child(label)
+  control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+  row.add_child(control)
+  add_child(row)
+
+
+func add_param_number(
+  label_text: String, default_value: float, min_value: float, max_value: float, step: float
+) -> int:
+  var index := _register_param(default_value)
+  var spin := SpinBox.new()
+  spin.min_value = min_value
+  spin.max_value = max_value
+  spin.step = step
+  spin.value = default_value
+  spin.allow_greater = true
+  spin.value_changed.connect(
+    func(value):
+      _param_values[index] = value
+      _trigger_synthesis()
+  )
+  _add_param_row(label_text, spin)
+  return index
+
+
+func add_param_bool(label_text: String, default_value: bool) -> int:
+  var index := _register_param(default_value)
+  var check := CheckBox.new()
+  check.button_pressed = default_value
+  check.toggled.connect(
+    func(pressed):
+      _param_values[index] = pressed
+      _trigger_synthesis()
+  )
+  _add_param_row(label_text, check)
+  return index
+
+
+func add_param_text(label_text: String, default_value: String) -> int:
+  var index := _register_param(default_value)
+  var edit := LineEdit.new()
+  edit.text = default_value
+  # Update the cache on every keystroke, but only re-synthesise on commit.
+  edit.text_changed.connect(func(text): _param_values[index] = text)
+  edit.text_submitted.connect(func(_text): _trigger_synthesis())
+  edit.focus_exited.connect(_trigger_synthesis)
+  _add_param_row(label_text, edit)
+  return index
+
+
 func show_spinner() -> void:
   if _spinner:
     _spinner.set_spinning(true)
@@ -150,9 +233,7 @@ func evaluate_async(input):
   if pass_through:
     return input
   var holder := {"result": null}
-  var task_id: int = WorkerThreadPool.add_task(
-    func(): holder.result = _evaluate_internal(input)
-  )
+  var task_id: int = WorkerThreadPool.add_task(func(): holder.result = _evaluate_internal(input))
   while not WorkerThreadPool.is_task_completed(task_id):
     await get_tree().process_frame
   WorkerThreadPool.wait_for_task_completion(task_id)

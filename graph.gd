@@ -9,10 +9,130 @@ const graph_nodes := [
     "color": Color(0.30, 0.55, 0.85),
   },
   {
-    "name": "Transform3D/Grayscale",
+    "name": "Color/Grayscale",
     "scene": preload("res://GraphNodes/Grayscale.tscn"),
     "color": Color(0.85, 0.55, 0.25),
-  }
+  },
+  {
+    "name": "Color/Grayscale Stretch",
+    "scene": preload("res://GraphNodes/GrayscaleStretch.tscn"),
+    "color": Color(0.85, 0.55, 0.25),
+  },
+  {
+    "name": "Filter/Gaussian Blur",
+    "scene": preload("res://GraphNodes/GaussianBlur.tscn"),
+    "color": Color(0.25, 0.7, 0.65),
+  },
+  {
+    "name": "Filter/Sobel Edges",
+    "scene": preload("res://GraphNodes/Sobel.tscn"),
+    "color": Color(0.25, 0.7, 0.65),
+  },
+  {
+    "name": "Threshold/Otsu Threshold",
+    "scene": preload("res://GraphNodes/OtsuThreshold.tscn"),
+    "color": Color(0.55, 0.35, 0.75),
+  },
+  {
+    "name": "Threshold/BW Smart",
+    "scene": preload("res://GraphNodes/BwSmart.tscn"),
+    "color": Color(0.55, 0.35, 0.75),
+  },
+  {
+    "name": "Threshold/Convert To Binary",
+    "scene": preload("res://GraphNodes/ConvertToBinary.tscn"),
+    "color": Color(0.55, 0.35, 0.75),
+  },
+  {
+    "name": "Morphology/Dilate",
+    "scene": preload("res://GraphNodes/BinaryDilation.tscn"),
+    "color": Color(0.4, 0.65, 0.35),
+  },
+  {
+    "name": "Morphology/Erode",
+    "scene": preload("res://GraphNodes/BinaryErosion.tscn"),
+    "color": Color(0.4, 0.65, 0.35),
+  },
+  {
+    "name": "Morphology/Open",
+    "scene": preload("res://GraphNodes/BinaryOpening.tscn"),
+    "color": Color(0.4, 0.65, 0.35),
+  },
+  {
+    "name": "Morphology/Close",
+    "scene": preload("res://GraphNodes/BinaryClosing.tscn"),
+    "color": Color(0.4, 0.65, 0.35),
+  },
+  {
+    "name": "Transform/Flip Horizontal",
+    "scene": preload("res://GraphNodes/FlipX.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Flip Vertical",
+    "scene": preload("res://GraphNodes/FlipY.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Transpose",
+    "scene": preload("res://GraphNodes/Transpose.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Transverse",
+    "scene": preload("res://GraphNodes/Transverse.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Rotate 90 CW",
+    "scene": preload("res://GraphNodes/Rotate90Cw.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Rotate 180",
+    "scene": preload("res://GraphNodes/Rotate180.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Rotate 270 CW",
+    "scene": preload("res://GraphNodes/Rotate270Cw.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Resize",
+    "scene": preload("res://GraphNodes/Resize.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Crop",
+    "scene": preload("res://GraphNodes/Crop.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Trim",
+    "scene": preload("res://GraphNodes/Trim.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Transform/Trim Threshold",
+    "scene": preload("res://GraphNodes/TrimThreshold.tscn"),
+    "color": Color(0.45, 0.55, 0.8),
+  },
+  {
+    "name": "Channel/To Multichannel",
+    "scene": preload("res://GraphNodes/SingleToMultichannel.tscn"),
+    "color": Color(0.7, 0.55, 0.3),
+  },
+  {
+    "name": "Document/Extract Document",
+    "scene": preload("res://GraphNodes/ExtractDocument.tscn"),
+    "color": Color(0.6, 0.45, 0.3),
+  },
+  {
+    "name": "Analysis/Histogram",
+    "scene": preload("res://GraphNodes/Histogram.tscn"),
+    "color": Color(0.75, 0.55, 0.55),
+  },
 ]
 const SHOW_NODE_COLOR := Color(0.75, 0.30, 0.40)
 var last_popup_position = null  # Vertex

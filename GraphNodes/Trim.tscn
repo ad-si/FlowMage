@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://GraphNodes/trim.gd" id="1"]
+
+[node name="TrimNode" type="GraphNode"]
+offset_right = 150.0
+offset_bottom = 60.0
+title = "Trim"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+script = ExtResource("1")
+
+[node name="Port" type="Control" parent="."]
+custom_minimum_size = Vector2(130, 16)
+layout_mode = 2
