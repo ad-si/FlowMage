@@ -40,6 +40,7 @@ godot --path .
 - [FotoKilof] - Comprehensive desktop app for [ImageMagick].
 - [GIE] - Generative Image Editor is a node based image editor
 - [GimelStudio] - Cross-platform non-destructive, node based 2D image editor
+- [Image-Processing-Node-Editor] - Node editor for image processing based on OpenCV and DearPyGui
 - [ImagePlay] - Prototyping tool for building image processing algorithms
 - [ImprovCV] - Portable, open source, modular computer vision system
 - [Nimp] - Node-based image manipulation program (webapp)
@@ -59,6 +60,7 @@ godot --path .
 [GEGL]: https://gegl.org
 [GIE]: https://github.com/alexge50/gie
 [GimelStudio]: https://github.com/GimelStudio/GimelStudio
+[Image-Processing-Node-Editor]: https://github.com/Kazuhito00/Image-Processing-Node-Editor
 [ImagePlay]: https://cpvrlab.github.io/ImagePlay/
 [ImprovCV]: http://www.adrianboeing.com/improvCV/index.html
 [libvips]: https://github.com/libvips/libvips
